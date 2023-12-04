@@ -35,6 +35,7 @@ export function Form({ addTodo }: FormProps) {
       <input
         className="mb-2 w-full px-2 py-3 border rounded outline-none border-grey-600"
         id="new-todo-input"
+        data-testid="new-todo-name-input"
         value={name}
         onChange={onChange}
       />
@@ -46,6 +47,7 @@ export function Form({ addTodo }: FormProps) {
         type="submit"
         value="Submit"
         disabled={!name}
+        data-testid="submit-new-todo-button"
       />
     </form>
   );

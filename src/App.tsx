@@ -1,68 +1,9 @@
-import { nanoid } from "nanoid";
-import { ChangeEvent, MouseEvent } from "react";
-import { useSessionStorage } from "usehooks-ts";
-
 import { Form } from "./components/Form";
 import { Todo } from "./components/TodoItem";
-import { initialData } from "./initialData";
-
-export interface Todo {
-  id: string;
-  name: string;
-  completed: boolean;
-}
+import { useTodoStore } from "./todoStore";
 
 function App() {
-  const [todos, setTodos] = useSessionStorage<Todo[]>("todos", initialData);
-
-  const addTodo = (name: string): void => {
-    const newTodo: Todo = {
-      id: nanoid(),
-      name,
-      completed: false,
-    };
-
-    setTodos([...todos, newTodo]);
-  };
-
-  const handleTodoToggle = (event: ChangeEvent<HTMLInputElement>): void => {
-    const id = event.currentTarget.id;
-
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        const newTodo: Todo = {
-          ...todo,
-          completed: !todo.completed,
-        };
-        return newTodo;
-      }
-
-      return todo;
-    });
-
-    setTodos(updatedTodos);
-  };
-
-  const deleteTodo = (event: MouseEvent<HTMLButtonElement>): void => {
-    const remainingTodos = todos.filter((todo) => String(event.currentTarget.id) !== todo.id);
-    setTodos(remainingTodos);
-  };
-
-  const editTodo = (id: string, newName: string) => {
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        const newTodo: Todo = {
-          ...todo,
-          name: newName,
-        };
-        return newTodo;
-      }
-
-      return todo;
-    });
-
-    setTodos(updatedTodos);
-  };
+  const { todos, addTodo, toggleTodo, editTodo, deleteTodo } = useTodoStore();
 
   return (
     <div className="flex justify-center h-screen">
@@ -74,8 +15,8 @@ function App() {
             <Todo
               key={todo.id}
               todo={todo}
-              handleTodoToggle={handleTodoToggle}
-              deleteTodo={deleteTodo}
+              handleTodoToggle={() => toggleTodo(todo.id)}
+              deleteTodo={() => deleteTodo(todo.id)}
               editTodo={editTodo}
             />
           ))}

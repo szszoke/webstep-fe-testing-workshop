@@ -1,6 +1,6 @@
 import { ChangeEvent, MouseEvent, useState, useRef } from "react";
 
-import type { Todo } from "../App";
+import type { Todo } from "../todoStore";
 
 interface Test {
   todo: Todo;
@@ -27,6 +27,7 @@ export function Todo({ todo, handleTodoToggle, deleteTodo, editTodo }: Test) {
         className={`inline-block mt-1 px-2 py-3 border rounded text-gray-600 w-6/12 ${
           todo.completed ? "line-through" : ""
         }`}
+        data-testid="todo-name-input"
         value={name || todo.name}
       />
 
@@ -35,10 +36,11 @@ export function Todo({ todo, handleTodoToggle, deleteTodo, editTodo }: Test) {
           className="w-5 h-5"
           type="checkbox"
           id={todo.id}
+          data-testid="todo-done-checkbox"
           defaultChecked={todo.completed}
           onChange={handleTodoToggle}
         />
-        <button className="w-5 h-5" id={todo.id} onClick={deleteTodo}>
+        <button className="w-5 h-5" id={todo.id} data-testid="todo-delete-button" onClick={deleteTodo}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5 text-red-700"
